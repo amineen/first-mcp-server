@@ -1,0 +1,18 @@
+{
+	"servers": {
+		"first-mcp": {
+			"type": "stdio",
+			"command": "node",
+			"args": ["build/server.js"
+			],
+			"cwd":"${workspaceFolder}",
+			"dev": {
+				"watch": "build/**/*.ts",
+				"debug": {
+					"type": "node"
+				}
+			}
+		}
+	},
+	"inputs": []
+}

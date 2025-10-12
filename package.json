@@ -1,0 +1,24 @@
+{
+  "name": "first-mcp",
+  "version": "1.0.0",
+  "description": "Learning AI development",
+  "main": "src/server.ts",
+  "scripts": {
+    "server:build": "tsc",
+    "server:build:watch": "tsc --watch",
+    "server:start": "tsx src/server.ts",
+    "server:inspect": "DANGEROUSLY_OMIT_AUTH=true npx @modelcontextprotocol/inspector npm run server:start"
+  },
+  "author": "Aaron Mineen",
+  "license": "ISC",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.20.0",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@modelcontextprotocol/inspector": "^0.15.0",
+    "@types/node": "^24.7.2",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3"
+  }
+}
