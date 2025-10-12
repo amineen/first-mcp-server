@@ -28,5 +28,10 @@
     "id": 6,
     "name": "JB",
     "email": "jb@orange.com"
+  },
+  {
+    "id": 7,
+    "name": "sme",
+    "email": "sme@go.co"
   }
 ]
