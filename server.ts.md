@@ -15,9 +15,11 @@ import {
   GetMeterPaymentSchema,
   GetMonthlyPaymentSchema,
   GetDailyConsumptionSchema,
+  GetYearlyPaymentSchema,
   MeterPaymentResponseSchema,
   MonthlyPaymentResponseSchema,
-  DailyConsumptionResponseSchema
+  DailyConsumptionResponseSchema,
+  YearlyPaymentResponseSchema
 } from './types';
 
 const app = express();
@@ -62,6 +64,14 @@ mcpServer.setRequestHandler(ListToolsRequestSchema, async () => {
         description: 'Retrieve the total daily energy consumption for all meters on a specific date. Returns total consumption in kWh and breakdown by individual meters.',
         inputSchema: zodToJsonSchema(GetDailyConsumptionSchema, {
           name: 'GetDailyConsumptionInput',
+          $refStrategy: 'none'
+        })
+      },
+      {
+        name: 'get_yearly_payment_total',
+        description: 'Retrieve the overall total payment for all meters for a specific year. Returns aggregated payment data including total amount, payment count, number of unique meters, and monthly breakdown.',
+        inputSchema: zodToJsonSchema(GetYearlyPaymentSchema, {
+          name: 'GetYearlyPaymentInput',
           $refStrategy: 'none'
         })
       }
@@ -138,6 +148,26 @@ mcpServer.setRequestHandler(CallToolRequestSchema, async (request) => {
         
         // Validate output with Zod
         const validatedOutput = DailyConsumptionResponseSchema.parse(result);
+        
+        return {
+          content: [
+            {
+              type: 'text',
+              text: JSON.stringify(validatedOutput, null, 2)
+            }
+          ]
+        };
+      }
+
+      case 'get_yearly_payment_total': {
+        // Validate input with Zod
+        const validatedInput = GetYearlyPaymentSchema.parse(args);
+        
+        // Call service
+        const result = await dbService.getTotalPaymentForYear(validatedInput);
+        
+        // Validate output with Zod
+        const validatedOutput = YearlyPaymentResponseSchema.parse(result);
         
         return {
           content: [

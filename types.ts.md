@@ -30,7 +30,6 @@ export interface IMeterDailyEnergyConsumption {
   offPeakHours: number;
 }
 
-
 // Zod Schemas for MCP Tool Inputs
 
 // Schema for get_meter_payment_total tool
