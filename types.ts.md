@@ -2,7 +2,9 @@
 // types.ts - Type definitions with Zod schemas
 import { z } from 'zod';
 
+// ============================================================================
 // Database Model Interfaces (keep these for Mongoose)
+// ============================================================================
 
 export interface IEnergyMeter {
   meterId: string;
@@ -21,7 +23,6 @@ export interface IPayment {
   status: 'completed' | 'pending' | 'failed';
 }
 
-
 export interface IMeterDailyEnergyConsumption {
   meterId: string;
   date: Date;
@@ -30,7 +31,9 @@ export interface IMeterDailyEnergyConsumption {
   offPeakHours: number;
 }
 
+// ============================================================================
 // Zod Schemas for MCP Tool Inputs
+// ============================================================================
 
 // Schema for get_meter_payment_total tool
 export const GetMeterPaymentSchema = z.object({
@@ -70,14 +73,27 @@ export const GetDailyConsumptionSchema = z.object({
     .describe('Date in ISO format (YYYY-MM-DD). If not provided, uses today\'s date.')
 }).strict();
 
+// Schema for get_yearly_payment_total tool
+export const GetYearlyPaymentSchema = z.object({
+  year: z.number()
+    .int('Year must be an integer')
+    .min(2000, 'Year must be between 2000 and 2100')
+    .max(2100, 'Year must be between 2000 and 2100')
+    .describe('Year (e.g., 2024)')
+}).strict();
+
+// ============================================================================
 // TypeScript Types Inferred from Zod Schemas
+// ============================================================================
 
 export type GetMeterPaymentRequest = z.infer<typeof GetMeterPaymentSchema>;
 export type GetMonthlyPaymentRequest = z.infer<typeof GetMonthlyPaymentSchema>;
 export type GetDailyConsumptionRequest = z.infer<typeof GetDailyConsumptionSchema>;
+export type GetYearlyPaymentRequest = z.infer<typeof GetYearlyPaymentSchema>;
 
-
+// ============================================================================
 // Response Types
+// ============================================================================
 
 export const MeterPaymentResponseSchema = z.object({
   meterId: z.string(),
@@ -108,10 +124,22 @@ export const DailyConsumptionResponseSchema = z.object({
   consumptionByMeter: z.array(DailyConsumptionItemSchema)
 });
 
+export const YearlyPaymentResponseSchema = z.object({
+  year: z.number(),
+  totalPayment: z.number(),
+  paymentCount: z.number(),
+  uniqueMeters: z.number(),
+  monthlyBreakdown: z.array(z.object({
+    month: z.number(),
+    monthName: z.string(),
+    totalPayment: z.number(),
+    paymentCount: z.number()
+  }))
+});
+
 // Export response types
 export type MeterPaymentResponse = z.infer<typeof MeterPaymentResponseSchema>;
 export type MonthlyPaymentResponse = z.infer<typeof MonthlyPaymentResponseSchema>;
 export type DailyConsumptionResponse = z.infer<typeof DailyConsumptionResponseSchema>;
 export type DailyConsumptionItem = z.infer<typeof DailyConsumptionItemSchema>;
-
-```
+export type YearlyPaymentResponse = z.infer<typeof YearlyPaymentResponseSchema>;
