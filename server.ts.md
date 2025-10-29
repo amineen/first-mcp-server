@@ -40,7 +40,7 @@ const mcpServer = new Server(
 );
 
 // Register tool list handler with Zod-generated schemas
-mcpServer.setRequestHandler(ListToolsRequestSchema, async () => {
+mcpServer.setRequestHandler(ListToolsRequestSchema, async () => {inp:
   return {
     tools: [
       {
@@ -111,7 +111,7 @@ mcpServer.setRequestHandler(CallToolRequestSchema, async (request) => {
           content: [
             {
               type: 'text',
-              text: JSON.stringify(validatedOutput, null, 2)
+              text: JSON.stringify(validatedOutput, null, 2)co
             }
           ]
         };
@@ -212,7 +212,7 @@ mcpServer.setRequestHandler(CallToolRequestSchema, async (request) => {
           text: JSON.stringify({ 
             error: errorMessage 
           }, null, 2)
-        }
+        }eSt
       ],
       isError: true
     };
